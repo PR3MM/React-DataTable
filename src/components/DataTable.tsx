@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { DataTable, DataTableSelectionCellChangeEvent, DataTableSelectionChangeEvent } from 'primereact/datatable';
+import { useState, useEffect, useRef } from 'react';
+import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { Button } from 'primereact/button';
@@ -22,7 +22,6 @@ export default function ArtworkTable() {
     const [rowsPerPage, setRowsPerPage] = useState(12);
     const [selectedArtworks, setSelectedArtworks] = useState<Artwork[]>([]);
     const [isSelectAll, setIsSelectAll] = useState(false);
-    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [customRows, setCustomRows] = useState<number>(12); 
     const toast = useRef<Toast>(null);
     const overlayPanel = useRef<OverlayPanel>(null);
@@ -58,7 +57,7 @@ export default function ArtworkTable() {
             .catch((error) => console.error('Error fetching artworks:', error));
     }, [first, rowsPerPage, isSelectAll]);
 
-    const handleSelectionChange = (e: DataTableSelectionChangeEvent<Artwork[]>) => {
+    const handleSelectionChange = (e: { value: Artwork[] }) => {
         const updatedSelection = e.value;
         setSelectedArtworks(updatedSelection);
         
@@ -97,8 +96,7 @@ export default function ArtworkTable() {
         const selectedCount = Math.min(customRows, artworks.length);
         const selectedArtworksSlice = artworks.slice(0, selectedCount);
         setSelectedArtworks(selectedArtworksSlice); 
-        setIsOverlayVisible(true); 
-        overlayPanel.current?.hide(); 
+        // setIsOverlayVisible(true); 
     };
 
     return (
